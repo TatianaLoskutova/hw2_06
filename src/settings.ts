@@ -12,7 +12,7 @@ app.use(parserMiddleware)
 app.use('/blogs', blogsRouters)
 app.use('/posts', postsRouters)
 app.use('/testing', testingRouter)
-// app.use('/auth', authRouter)
+app.use('/auth', authRouter)
 app.use('/users', usersRouter)
 
 export const setting = {
