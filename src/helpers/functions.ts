@@ -1,5 +1,6 @@
-import {blogsCollection, postsCollection, usersCollection} from '../db/db';
-import {BlogMongoDbType, PostMongoDbType, UserDbType} from '../types/types';
+import {blogsCollection, commentsCollection, postsCollection, usersCollection} from '../db/db';
+import {BlogMongoDbType, CommentDbType, PostMongoDbType, UserDbType} from '../types/types';
+import {CommentViewModel} from '../models/comment/commentViewModel';
 
 
 export const makeBlogPagination = async (
@@ -53,6 +54,35 @@ export const makePostMapping  = (arr: PostMongoDbType[]) => {
             blogId: post.blogId,
             blogName: post.blogName,
             createdAt: post.createdAt
+        }
+    })
+}
+
+
+export const makeCommentsPagination = async (
+    sortObj: any,
+    pageNumber: number,
+    pageSize: number,
+    filter?: any
+) => {
+    return await commentsCollection
+        .find(filter)
+        .sort(sortObj)
+        .skip(+pageNumber > 0 ? (+pageNumber - 1) * +pageSize : 0)
+        .limit(+pageSize > 0 ? +pageSize : 0)
+        .toArray()
+}
+
+export const makeCommentMapping  = (arr: CommentDbType[]): CommentViewModel[] => {
+    return arr.map((comment) => {
+        return {
+            id: comment._id.toString(),
+            content: comment.content,
+            commentatorInfo: [{
+                userId: comment.commentatorInfo.userId,
+                userLogin: comment.commentatorInfo.userLogin
+            }],
+            createdAt: comment.createdAt
         }
     })
 }

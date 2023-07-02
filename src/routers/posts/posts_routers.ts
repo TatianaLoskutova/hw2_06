@@ -1,6 +1,12 @@
 import {Router, Response} from 'express';
 import {ObjectId} from 'mongodb';
-import {RequestWithBody, RequestWithParams, RequestWithParamsAndBody, RequestWithQuery} from '../../types/types';
+import {
+    RequestWithBody,
+    RequestWithParams,
+    RequestWithParamsAndBody,
+    RequestWithParamsAndQuery,
+    RequestWithQuery
+} from '../../types/types';
 import {PostQueryModel} from '../../models/post/postQueryModel';
 import {postsQueryRepository} from '../../repositories/posts/posts_query_repository';
 import {errorsValidation} from '../../middlewares/errors_reply/errors_validation';
@@ -13,31 +19,31 @@ import {authValidationBearer} from '../../middlewares/authorization_validation/a
 import {contentValidation} from '../../middlewares/comments_validation/comments_validation';
 import {CommentInputModel} from '../../models/comment/commentInputModel';
 import {commentsService} from '../../domain/comments/comments_service';
+import {commentsQueryRepository} from '../../repositories/comments/comments_query_repository';
 
 
 
 export const postsRouters = Router()
 
-// postsRouters.get('/:id/comments',
-//     authValidationBearer,
-//     contentValidation,
-//     errorsValidation,
-//     async (req:RequestWithParamsAndBody<GetByIdParam,CommentInputModel>, res: Response) => {
-//         const foundedPostId = await postsQueryRepository.findPostById(new ObjectId(req.params.id))
-//         if (!foundedPostId) {
-//             res.sendStatus(404)
-//             return
-//         }
-//
-//         if (!req.user) {
-//             res.sendStatus(401)
-//             return
-//         }
-//         const newComment = await commentsService.createComment(req.body, req.user)
-//         if (newComment) {
-//             res.status(201).send(newComment)
-//         }
-//     })
+postsRouters.get('/:id/comments',
+    async (req:RequestWithParamsAndQuery<GetByIdParam,PostQueryModel>, res: Response) => {
+        const foundedPostId = await postsQueryRepository.findPostById(new ObjectId(req.params.id))
+        if (!foundedPostId) {
+            res.sendStatus(404)
+            return
+        }
+
+        const allCommentsForPostId = await commentsQueryRepository.getAllComments(
+            req.query.pageNumber,
+            req.query.pageSize,
+            req.query.sortBy,
+            req.query.sortDirection
+        )
+        if (allCommentsForPostId) {
+            res.status(200).send(allCommentsForPostId)
+        }
+
+    })
 
 postsRouters.post('/:id/comments',
     authValidationBearer,
