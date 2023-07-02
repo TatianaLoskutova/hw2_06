@@ -1,6 +1,10 @@
-import {commentsCollection} from '../../db/db';
+import {commentsCollection, postsCollection} from '../../db/db';
 import {makeCommentMapping, makeCommentsPagination} from '../../helpers/functions';
 import {PaginatorCommentViewModel} from '../../models/comment/commentsViewModelWithPagination';
+import {ObjectId} from 'mongodb';
+import {PostViewModel} from '../../models/post/postViewModel';
+import {CommentViewModel} from '../../models/comment/commentViewModel';
+import {CommentatorInfo} from '../../models/comment/commentatorInfo';
 
 
 export const commentsQueryRepository = {
@@ -30,5 +34,21 @@ export const commentsQueryRepository = {
             totalCount: commentsCount,
             items: makeCommentMapping(paging)
         }
-    }
+    },
+
+    // async findCommentById(_id: ObjectId): Promise<CommentViewModel> | null {
+    //     const foundedComment = await commentsCollection.findOne({_id})
+    //     if (!foundedComment) {
+    //         return null
+    //     }
+    //     return {
+    //         id: foundedComment._id.toString(),
+    //         content: foundedComment.content,
+    //         commentatorInfo: {
+    //             userId: foundedComment.commentatorInfo.userId,
+    //             userLogin: foundedComment.commentatorInfo.userLogin
+    //         },
+    //         createdAt: foundedComment.createdAt
+    //     }
+    // },
 }

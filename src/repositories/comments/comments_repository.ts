@@ -1,6 +1,9 @@
 import {CommentDbType} from '../../types/types';
-import {commentsCollection} from '../../db/db';
+import {commentsCollection, postsCollection} from '../../db/db';
 import {CommentViewModel} from '../../models/comment/commentViewModel';
+import {PostInputModel} from '../../models/post/postInputModel';
+import {ObjectId} from 'mongodb';
+import {CommentInputModel} from '../../models/comment/commentInputModel';
 
 
 export const commentsRepository = {
@@ -16,5 +19,18 @@ export const commentsRepository = {
             },
             createdAt: newComment.createdAt
         }
+    },
+
+    async updateComment(id: string, data: CommentInputModel): Promise<boolean> {
+        if (!ObjectId.isValid(id)) {
+            return false
+        }
+        const _id = new ObjectId(id)
+        const result = await commentsCollection.updateOne({_id: _id},{
+            $set: {
+                content: data.content
+            }
+        })
+        return result.matchedCount === 1
     },
 }

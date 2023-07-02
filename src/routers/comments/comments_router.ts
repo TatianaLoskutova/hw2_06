@@ -4,22 +4,23 @@ import {contentValidation} from '../../middlewares/comments_validation/comments_
 import {errorsValidation} from '../../middlewares/errors_reply/errors_validation';
 import {RequestWithParamsAndBody} from '../../types/types';
 import {GetByIdParam} from '../../models/getById';
-import {BlogInputModel} from '../../models/blog/blogInputModel';
-import {blogsService} from '../../domain/blogs/blogs_service';
 import {CommentInputModel} from '../../models/comment/commentInputModel';
+import {commentsService} from '../../domain/comments/comments_service';
+
 
 
 export const commentsRouter = Router()
 
-// commentsRouter.put('/:id',
-//     authValidationBearer,
-//     contentValidation,
-//     errorsValidation,
-//     async (req: RequestWithParamsAndBody<GetByIdParam,CommentInputModel>, res: Response) => {
-//         const isUpdated = await blogsService.updateBlog(req.params.id, req.body)
-//         if (isUpdated) {
-//             res.sendStatus(204)
-//         } else {
-//             res.sendStatus(404)
-//         }
-//     })
+commentsRouter.put('/:id',
+    authValidationBearer,
+    contentValidation,
+    errorsValidation,
+    async (req: RequestWithParamsAndBody<GetByIdParam,CommentInputModel>, res: Response) => {
+
+        const isUpdated = await commentsService.updateComment(req.params.id, req.body)
+        if (isUpdated) {
+            res.sendStatus(204)
+        } else {
+            res.sendStatus(404)
+        }
+    })
