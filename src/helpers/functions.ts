@@ -78,10 +78,10 @@ export const makeCommentMapping  = (arr: CommentDbType[]): CommentViewModel[] =>
         return {
             id: comment._id.toString(),
             content: comment.content,
-            commentatorInfo: [{
+            commentatorInfo: {
                 userId: comment.commentatorInfo.userId,
                 userLogin: comment.commentatorInfo.userLogin
-            }],
+            },
             createdAt: comment.createdAt
         }
     })

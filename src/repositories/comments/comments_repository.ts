@@ -10,10 +10,10 @@ export const commentsRepository = {
         return {
             id: result.insertedId.toString(),
             content: newComment.content,
-            commentatorInfo: [{
+            commentatorInfo: {
                 userId: newComment.commentatorInfo.userId,
                 userLogin: newComment.commentatorInfo.userLogin
-            }],
+            },
             createdAt: newComment.createdAt
         }
     },
