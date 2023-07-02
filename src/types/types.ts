@@ -1,6 +1,5 @@
 import {ObjectId} from 'mongodb'
 import {Request} from 'express';
-import {LoginInputModel} from '../models/auth/loginInputModel';
 
 export type BlogMongoDbType = {
     _id: ObjectId
@@ -27,6 +26,16 @@ export type UserDbType = {
     email: string
     passwordHash: string
     passwordSalt: string
+    createdAt: string
+}
+
+export type CommentDbType = {
+    _id: ObjectId
+    content: string
+    commentatorInfo: {
+        userId: string
+        userLogin: string
+    }
     createdAt: string
 }
 

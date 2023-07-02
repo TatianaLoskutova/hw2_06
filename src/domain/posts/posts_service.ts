@@ -5,6 +5,8 @@ import {blogQueryRepository} from '../../repositories/blogs/blogs_query_reposito
 import {PostMongoDbType} from '../../types/types';
 import {postsRepository} from '../../repositories/posts/posts_repository';
 import {postsCollection} from '../../db/db';
+import {CommentInputModel} from '../../models/comment/commentInputModel';
+import {CommentViewModel} from '../../models/comment/commentViewModel';
 
 
 export const postsService = {
@@ -41,6 +43,7 @@ export const postsService = {
         }
         return await postsRepository.createPost(postToMongoDb)
     },
+
 
     async updatePost(id: string, data: PostInputModel): Promise<boolean> {
         if (!ObjectId.isValid(id)) {

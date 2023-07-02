@@ -1,5 +1,6 @@
 
 import {UserViewModel} from '../models/users/userViewModel';
+import {UserDbType} from './types';
 
 declare global {
     namespace Express {

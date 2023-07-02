@@ -11,10 +11,16 @@ export const authValidationBearer = async (req: Request, res: Response, next: Ne
     const token = req.headers.authorization.split(' ')[1]
 
     const userId = await jwtService.getUserIdByToken(token)
-    if (!userId) return res.sendStatus(401)
+    if (!userId) {
+        res.sendStatus(401)
+        return
+    }
 
     const user = await usersQueryRepository.findUserById(userId)
-    if (!user) return res.sendStatus(401)
+    if (!user) {
+        res.sendStatus(401)
+        return
+    }
 
     req.user = user
     next()

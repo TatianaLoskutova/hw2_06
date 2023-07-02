@@ -9,13 +9,58 @@ import {authorizationValidationВasic} from '../../middlewares/authorization_val
 import {postBlogIdValidation, postContentValidation, postShortDescription, postTitleValidation} from '../../middlewares/posts_validation/posts_validators';
 import {PostInputModel} from '../../models/post/postInputModel';
 import {postsService} from '../../domain/posts/posts_service';
+import {authValidationBearer} from '../../middlewares/authorization_validation/auth_validation_bearer';
+import {contentValidation} from '../../middlewares/comments_validation/comments_validation';
+import {CommentInputModel} from '../../models/comment/commentInputModel';
+import {commentsService} from '../../domain/comments/comments_service';
 
 
 
 export const postsRouters = Router()
 
+// postsRouters.get('/:id/comments',
+//     authValidationBearer,
+//     contentValidation,
+//     errorsValidation,
+//     async (req:RequestWithParamsAndBody<GetByIdParam,CommentInputModel>, res: Response) => {
+//         const foundedPostId = await postsQueryRepository.findPostById(new ObjectId(req.params.id))
+//         if (!foundedPostId) {
+//             res.sendStatus(404)
+//             return
+//         }
+//
+//         if (!req.user) {
+//             res.sendStatus(401)
+//             return
+//         }
+//         const newComment = await commentsService.createComment(req.body, req.user)
+//         if (newComment) {
+//             res.status(201).send(newComment)
+//         }
+//     })
 
-// Ниже все менять не нужно
+postsRouters.post('/:id/comments',
+    authValidationBearer,
+    contentValidation,
+    errorsValidation,
+    async (req:RequestWithParamsAndBody<GetByIdParam,CommentInputModel>, res: Response) => {
+        const foundedPostId = await postsQueryRepository.findPostById(new ObjectId(req.params.id))
+        if (!foundedPostId) {
+            res.sendStatus(404)
+            return
+        }
+
+        if (!req.user) {
+            res.sendStatus(401)
+            return
+        }
+        const newComment = await commentsService.createComment(req.body, req.user)
+        if (newComment) {
+            res.status(201).send(newComment)
+        }
+    })
+
+
 postsRouters.get('/', async (req: RequestWithQuery<PostQueryModel>, res: Response) => {
     const allPosts = await postsQueryRepository.getAllPosts(
         req.query.pageNumber,

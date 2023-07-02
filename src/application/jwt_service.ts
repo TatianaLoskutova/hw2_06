@@ -10,7 +10,6 @@ export const jwtService = {
         return {
             accessToken: token
             }
-            // или просто return token? проверить
     },
     async getUserIdByToken(token: string) {
         try {
