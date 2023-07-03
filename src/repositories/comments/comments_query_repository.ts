@@ -26,7 +26,7 @@ export const commentsQueryRepository = {
         }
         const commentsCount = await commentsCollection.countDocuments()
         const pagesCount = Math.ceil(commentsCount / +pageSize)
-        const paging = await makeCommentsPagination(sortObj, pageNumber, pageSize)
+        const paging = await makeCommentsPagination(sortObj, pageNumber, pageSize, postId)
 
         return {
             pagesCount: pagesCount,
