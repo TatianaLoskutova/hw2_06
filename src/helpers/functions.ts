@@ -63,11 +63,10 @@ export const makeCommentsPagination = async (
     sortObj: any,
     pageNumber: number,
     pageSize: number,
-    postId: string,
     filter?: any
 ) => {
     return await commentsCollection
-        .find({postId: postId})
+        .find(filter)
         .sort(sortObj)
         .skip(+pageNumber > 0 ? (+pageNumber - 1) * +pageSize : 0)
         .limit(+pageSize > 0 ? +pageSize : 0)

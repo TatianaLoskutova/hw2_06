@@ -9,13 +9,16 @@ import {CommentatorInfo} from '../../models/comment/commentatorInfo';
 
 export const commentsQueryRepository = {
     async getAllCommentsForPost(
-        postId: string,
+        postId: ObjectId,
         pageNumber: number = 1,
         pageSize: number = 10,
         sortBy: string = 'createdAt',
         sortDirection: string = 'desc'
     ): Promise<PaginatorCommentViewModel> {
+
+        const filter: any = {postId: postId.toString()}
         const sortObj: any = {}
+
 
         if (sortBy) {
             sortObj[sortBy] = -1
@@ -24,9 +27,9 @@ export const commentsQueryRepository = {
         if (sortDirection === 'asc') {
             sortObj[sortBy] = 1
         }
-        const commentsCount = await commentsCollection.countDocuments({postId: postId})
+        const commentsCount = await commentsCollection.countDocuments(filter)
         const pagesCount = Math.ceil(commentsCount / +pageSize)
-        const paging = await makeCommentsPagination(sortObj, pageNumber, pageSize, postId)
+        const paging = await makeCommentsPagination(sortObj, pageNumber, pageSize, filter)
 
         return {
             pagesCount: pagesCount,
