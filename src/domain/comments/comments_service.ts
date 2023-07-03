@@ -4,10 +4,8 @@ import {ObjectId} from 'mongodb';
 import {commentsRepository} from '../../repositories/comments/comments_repository';
 import {CommentDbType} from '../../types/types';
 import {UserViewModel} from '../../models/users/userViewModel';
-import {PostInputModel} from '../../models/post/postInputModel';
+import {commentsCollection, postsCollection} from '../../db/db';
 import {postsRepository} from '../../repositories/posts/posts_repository';
-import {commentsQueryRepository} from '../../repositories/comments/comments_query_repository';
-import {usersQueryRepository} from '../../repositories/users/users_query_repository';
 
 
 
@@ -32,6 +30,15 @@ export const commentsService = {
 
 
         return await commentsRepository.updateComment(commentId, data)
+    },
+
+    async deleteCommentById(id: string): Promise<boolean> {
+        const commentToDelete = await commentsCollection.findOne({_id: new ObjectId(id)})
+
+        if (!commentToDelete) {
+            return false
+        }
+        return await commentsRepository.deleteCommentById(id)
     },
 }
 
