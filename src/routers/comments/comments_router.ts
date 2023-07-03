@@ -6,6 +6,8 @@ import {RequestWithParamsAndBody} from '../../types/types';
 import {GetByIdParam} from '../../models/getById';
 import {CommentInputModel} from '../../models/comment/commentInputModel';
 import {commentsService} from '../../domain/comments/comments_service';
+import {commentsQueryRepository} from '../../repositories/comments/comments_query_repository';
+import {ObjectId} from 'mongodb';
 
 
 
@@ -16,6 +18,16 @@ commentsRouter.put('/:id',
     contentValidation,
     errorsValidation,
     async (req: RequestWithParamsAndBody<GetByIdParam,CommentInputModel>, res: Response) => {
+        const commentId = await commentsQueryRepository.findCommentById(new ObjectId(req.params.id))
+        if (!commentId) {
+            res.sendStatus(404)
+            return
+        }
+        const userId = req.user?.id
+        if (commentId.commentatorInfo.userId !== userId) {
+            res.sendStatus(403)
+            return
+        }
 
         const isUpdated = await commentsService.updateComment(req.params.id, req.body)
         if (isUpdated) {
@@ -24,3 +36,4 @@ commentsRouter.put('/:id',
             res.sendStatus(404)
         }
     })
+    

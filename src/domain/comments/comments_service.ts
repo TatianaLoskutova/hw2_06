@@ -7,6 +7,7 @@ import {UserViewModel} from '../../models/users/userViewModel';
 import {PostInputModel} from '../../models/post/postInputModel';
 import {postsRepository} from '../../repositories/posts/posts_repository';
 import {commentsQueryRepository} from '../../repositories/comments/comments_query_repository';
+import {usersQueryRepository} from '../../repositories/users/users_query_repository';
 
 
 
@@ -24,12 +25,13 @@ export const commentsService = {
         return await commentsRepository.createComment(commentToMongoDb)
     },
 
-    async updateComment(id: string, data: CommentInputModel): Promise<boolean> {
-        if (!ObjectId.isValid(id)) {
+    async updateComment(commentId: string, data: CommentInputModel): Promise<boolean> {
+        if (!ObjectId.isValid(commentId)) {
             return false
         }
 
-        return await commentsRepository.updateComment(id, data)
+
+        return await commentsRepository.updateComment(commentId, data)
     },
 }
 
