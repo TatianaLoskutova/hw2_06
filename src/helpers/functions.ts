@@ -73,7 +73,7 @@ export const makeCommentsPagination = async (
         .toArray()
 }
 
-export const makeCommentMapping  = (arr: CommentDbType[]): CommentViewModel[] => {
+export const makeCommentMapping  = (arr: CommentDbType[]) => {
     return arr.map((comment) => {
         return {
             id: comment._id.toString(),
