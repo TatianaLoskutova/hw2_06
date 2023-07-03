@@ -8,7 +8,8 @@ import {CommentatorInfo} from '../../models/comment/commentatorInfo';
 
 
 export const commentsQueryRepository = {
-    async getAllComments(
+    async getAllCommentsForPost(
+        postId: string,
         pageNumber: number = 1,
         pageSize: number = 10,
         sortBy: string = 'createdAt',

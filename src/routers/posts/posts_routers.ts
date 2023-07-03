@@ -33,7 +33,8 @@ postsRouters.get('/:id/comments',
             return
         }
 
-        const allCommentsForPostId = await commentsQueryRepository.getAllComments(
+        const allCommentsForPostId = await commentsQueryRepository.getAllCommentsForPost(
+            req.params.id,
             req.query.pageNumber,
             req.query.pageSize,
             req.query.sortBy,
