@@ -8,10 +8,6 @@ import {CommentInputModel} from '../../models/comment/commentInputModel';
 import {commentsService} from '../../domain/comments/comments_service';
 import {commentsQueryRepository} from '../../repositories/comments/comments_query_repository';
 import {ObjectId} from 'mongodb';
-import {authorizationValidationВasic} from '../../middlewares/authorization_validation/authorization_validation_basic';
-import {postsService} from '../../domain/posts/posts_service';
-import {postsRouters} from '../posts/posts_routers';
-import {postsQueryRepository} from '../../repositories/posts/posts_query_repository';
 
 
 
