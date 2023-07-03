@@ -11,6 +11,7 @@ import {ObjectId} from 'mongodb';
 import {authorizationValidationВasic} from '../../middlewares/authorization_validation/authorization_validation_basic';
 import {postsService} from '../../domain/posts/posts_service';
 import {postsRouters} from '../posts/posts_routers';
+import {postsQueryRepository} from '../../repositories/posts/posts_query_repository';
 
 
 
@@ -38,6 +39,16 @@ commentsRouter.put('/:id',
         } else {
             res.sendStatus(404)
         }
+    })
+
+commentsRouter.get('/:id',
+    async (req:RequestWithParams<GetByIdParam>, res: Response) => {
+        const result = await commentsQueryRepository.findCommentById(new ObjectId(req.params.id))
+        if (!result) {
+            res.sendStatus(404)
+            return
+        }
+        res.status(200).send(result)
     })
 
 commentsRouter.delete('/:id',
