@@ -34,7 +34,7 @@ postsRouters.get('/:id/comments',
         }
 
         const allCommentsForPostId = await commentsQueryRepository.getAllCommentsForPost(
-            new ObjectId(req.params.id),
+            req.params.id,
             req.query.pageNumber,
             req.query.pageSize,
             req.query.sortBy,
@@ -61,7 +61,7 @@ postsRouters.post('/:id/comments',
             res.sendStatus(401)
             return
         }
-        const newComment = await commentsService.createComment(req.body, req.user)
+        const newComment = await commentsService.createComment(req.body, req.user, req.params.id)
         if (newComment) {
             res.status(201).send(newComment)
         }

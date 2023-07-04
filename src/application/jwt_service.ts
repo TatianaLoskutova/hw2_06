@@ -6,7 +6,7 @@ import {ObjectId} from 'mongodb';
 
 export const jwtService = {
     async createJWT(user: UserDbType): Promise<LoginSuccessViewModel> {
-        const token = jwt.sign({userId: user._id}, setting.JWT_SECRET, {expiresIn: '48h'})
+        const token = jwt.sign({userId: user._id}, setting.JWT_SECRET, {expiresIn: '500h'})
         return {
             accessToken: token
             }

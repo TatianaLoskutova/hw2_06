@@ -4,15 +4,17 @@ import {ObjectId} from 'mongodb';
 import {commentsRepository} from '../../repositories/comments/comments_repository';
 import {CommentDbType} from '../../types/types';
 import {UserViewModel} from '../../models/users/userViewModel';
-import {commentsCollection, postsCollection} from '../../db/db';
-import {postsRepository} from '../../repositories/posts/posts_repository';
+import {commentsCollection} from '../../db/db';
+
+
 
 
 
 export const commentsService = {
-    async createComment(inputData: CommentInputModel, user: UserViewModel): Promise<CommentViewModel | null> {
+    async createComment(inputData: CommentInputModel, user: UserViewModel, postId: string): Promise<CommentViewModel | null> {
         const commentToMongoDb: CommentDbType = {
             _id: new ObjectId(),
+            postId: postId.toString(),
             content: inputData.content,
             commentatorInfo: {
                 userId: user.id,
@@ -27,8 +29,6 @@ export const commentsService = {
         if (!ObjectId.isValid(commentId)) {
             return false
         }
-
-
         return await commentsRepository.updateComment(commentId, data)
     },
 
